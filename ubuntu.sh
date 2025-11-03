@@ -3,8 +3,6 @@ sudo apt-get update
 echo 'installing curl' 
 sudo apt install curl -y
 
-
-
 echo 'installing git' 
 sudo apt install git -y
 git_config_user_email="me@felipealencar.dev"
@@ -56,7 +54,6 @@ sudo apt-get update
 sudo apt-get install code -y # or code-insiders
 
 echo 'installing extensions'
-
 code --install-extension BeardedBear.beardedtheme
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension christian-kohler.path-intellisense
@@ -108,6 +105,46 @@ sudo apt install fonts-firacode -y
 wget -O ~/.oh-my-zsh/themes/node.zsh-theme https://raw.githubusercontent.com/skuridin/oh-my-zsh-node-theme/master/node.zsh-theme 
 sed -i 's/.*ZSH_THEME=.*/ZSH_THEME="node"/g' ~/.zshrc
 
+echo 'installing docker' 
+sudo apt-get remove docker docker-engine docker.io -y
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable docker
+docker --version
+
+chmod 777 /var/run/docker.sock
+docker run hello-world
+
+echo 'installing docker-compose' 
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+
+echo 'installing aws-cli' 
+sudo apt-get install awscli -y
+aws --version
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+sudo dpkg -i session-manager-plugin.deb
+session-manager-plugin --version
+
+echo 'installing fzf'
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --all
+
+echo 'installing brave'
+curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+source /etc/os-release
+echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/brave-browser-release-${UBUNTU_CODENAME}.list
+sudo apt update
+sudo apt install brave-keyring brave-browser -y
+clear
+
+echo 'installing dbeaver'
+wget -c https://dbeaver.io/files/6.0.0/dbeaver-ce_6.0.0_amd64.deb
+sudo dpkg -i dbeaver-ce_6.0.0_amd64.deb
+sudo apt-get install -f -y
+clear
+
 echo 'installing terminator'
 sudo apt-get update
 sudo apt-get install terminator -y
@@ -145,7 +182,6 @@ cat <<EOF >  ~/.config/terminator/config
     cursor_color = "#aaaaaa"
 EOF
 
-
 cat <<EOF >>  ~/.config/terminator/config
 [[Dracula]]
     background_color = "#1e1f29"
@@ -158,40 +194,4 @@ cat <<EOF >>  ~/.config/terminator/config
     scrollback_infinite = True
 EOF
 
-echo 'installing docker' 
-sudo apt-get remove docker docker-engine docker.io
-sudo apt install docker.io -y
-sudo systemctl start docker
-sudo systemctl enable docker
-docker --version
-
-chmod 777 /var/run/docker.sock
-docker run hello-world
-
-echo 'installing docker-compose' 
-sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-docker-compose --version
-
-echo 'installing aws-cli' 
-sudo apt-get install awscli -y
-aws --version
-curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
-sudo dpkg -i session-manager-plugin.deb
-session-manager-plugin --version
-
-echo 'installing fzf'
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install --all
-
-echo 'installing brave'
-curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-source /etc/os-release
-echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ $UBUNTU_CODENAME main" | sudo tee /etc/apt/sources.list.d/brave-browser-release-${UBUNTU_CODENAME}.list
-sudo apt update
-sudo apt install brave-keyring brave-browser
-
-echo 'installing dbeaver'
-wget -c https://dbeaver.io/files/6.0.0/dbeaver-ce_6.0.0_amd64.deb
-sudo dpkg -i dbeaver-ce_6.0.0_amd64.deb
-sudo apt-get install -f
+echo "Finished setup successfully :)"
