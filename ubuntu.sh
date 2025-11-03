@@ -3,27 +3,28 @@ sudo apt-get update
 echo 'installing curl' 
 sudo apt install curl -y
 
+
+
 echo 'installing git' 
 sudo apt install git -y
-
-echo "What name do you want to use in GIT user.name?"
-echo "For example, mine will be \"Erick Wendel\""
-read git_config_user_name
-git config --global user.name "$git_config_user_name"
-clear 
-
-echo "What email do you want to use in GIT user.email?"
-echo "For example, mine will be \"erick.workspace@gmail.com\""
-read git_config_user_email
+git_config_user_email="me@felipealencar.dev"
+git config --global user.name "Felipe Alencar"
 git config --global user.email $git_config_user_email
 clear
 
 echo "Can I set VIM as your default GIT editor for you? (y/n)"
 read git_core_editor_to_vim
 if echo "$git_core_editor_to_vim" | grep -iq "^y" ;then
+	echo 'installing vim'
+	sudo apt install vim -y
 	git config --global core.editor vim
+	clear
 else
-	echo "Okay, no problem. :) Let's move on!"
+	echo "Okay, no problem. :) Let's move on by using Nano!"
+	echo 'installing nano'
+	sudo apt install nano -y
+	git config --global core.editor nano
+	clear
 fi
 
 echo "Generating a SSH Key"
@@ -46,10 +47,6 @@ export alias pbcopy='xclip -selection clipboard'
 export alias pbpaste='xclip -selection clipboard -o'
 source ~/.zshrc
 
-echo 'installing vim'
-sudo apt install vim -y
-clear
-
 echo 'installing code'
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
@@ -59,15 +56,21 @@ sudo apt-get update
 sudo apt-get install code -y # or code-insiders
 
 echo 'installing extensions'
+
+code --install-extension BeardedBear.beardedtheme
 code --install-extension dbaeumer.vscode-eslint
 code --install-extension christian-kohler.path-intellisense
-code --install-extension dbaeumer.vscode-eslint
+code --install-extension firsttris.vscode-jest-runner
+code --install-extension ritwickdey.LiveServer
+code --install-extension PKief.material-icon-theme
 code --install-extension dracula-theme.theme-dracula
 code --install-extension esbenp.prettier-vscode
 code --install-extension foxundermoon.shell-format
-code --install-extension pmneo.tsimporter
+code --install-extension dbaeumer.vscode-eslint
 code --install-extension waderyan.gitblame
 code --install-extension yzhang.markdown-all-in-one
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension dbaeumer.vscode-eslint
 
 echo 'installing spotify' 
 snap install spotify
@@ -90,12 +93,12 @@ export NVM_DIR="$HOME/.nvm"
 
 source ~/.zshrc
 nvm --version
-nvm install 12
-nvm alias default 12
+nvm install --lts
+nvm alias default lts
 node --version
 npm --version
 
-echo 'installing autosuggestions' 
+echo 'installing autosuggestions'
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 echo "source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
 source ~/.zshrc
@@ -104,15 +107,6 @@ echo 'installing theme'
 sudo apt install fonts-firacode -y
 wget -O ~/.oh-my-zsh/themes/node.zsh-theme https://raw.githubusercontent.com/skuridin/oh-my-zsh-node-theme/master/node.zsh-theme 
 sed -i 's/.*ZSH_THEME=.*/ZSH_THEME="node"/g' ~/.zshrc
-
-echo 'installing meet franz' 
-wget https://github.com/meetfranz/franz/releases/download/v5.1.0/franz_5.1.0_amd64.deb -O franz.deb
-sudo dpkg -i franz.debchristian-kohler.path-intellisense
-sudo apt-get install -y -f 
-
-echo 'installing slack' 
-wget https://downloads.slack-edge.com/linux_releases/slack-desktop-3.3.8-amd64.deb
-sudo apt install ./slack-desktop-*.deb -y
 
 echo 'installing terminator'
 sudo apt-get update
@@ -185,14 +179,6 @@ aws --version
 curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
 sudo dpkg -i session-manager-plugin.deb
 session-manager-plugin --version
-
-echo 'installing teamviewer'
-wget https://download.teamviewer.com/download/linux/teamviewer_amd64.deb
-sudo apt install -y ./teamviewer_amd64.deb
-
-echo 'installing vnc-viewer'
-sudo apt-get install -y --no-install-recommends ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
-sudo apt-get install vnc4server -y 
 
 echo 'installing fzf'
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
